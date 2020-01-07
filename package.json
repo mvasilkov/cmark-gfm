@@ -1,8 +1,8 @@
 {
-  "name": "cmark-gfm",
-  "version": "0.6.0",
+  "name": "@mvasilkov/cmark-gfm",
+  "version": "0.29.0-gfm.0",
   "description": "Node bindings to GitHub's GFM-enhanced fork of the cmark Markdown parser",
-  "repository": "https://github.com/BinaryMuse/node-cmark-gfm",
+  "repository": "https://github.com/mvasilkov/node-cmark-gfm.git",
   "main": "index.js",
   "scripts": {
     "build": "node-gyp rebuild",
