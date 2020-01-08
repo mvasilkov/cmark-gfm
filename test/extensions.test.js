@@ -113,6 +113,35 @@ describe('extensions', () => {
       })
       assert.htmlEqual(rendered, html)
     })
+
+    // https://github.com/github/cmark-gfm/issues/168
+    it('handles nested sublists correctly', () => {
+      const markdown = dedent`
+      - [x] foo
+          - [ ] bar
+          - [x] baz
+      - [ ] bim
+      `
+
+      const html = `
+      <ul>
+        <li><input type="checkbox" checked="" disabled="" /> foo
+<ul>
+  <li><input type="checkbox" disabled="" /> bar</li>
+  <li><input type="checkbox" checked="" disabled="" /> baz</li>
+</ul>
+        </li>
+        <li><input type="checkbox" disabled="" /> bim</li>
+      </ul>
+      `
+
+      const rendered = cmark.renderHtmlSync(markdown, {
+        extensions: {
+          tasklist: true
+        }
+      })
+      assert.htmlEqual(rendered, html)
+    })
   })
 
   it("doesn't crash for bad extensions", () => {
