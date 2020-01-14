@@ -1,6 +1,6 @@
 {
   "name": "@mvasilkov/cmark-gfm",
-  "version": "0.29.0-gfm.0.1",
+  "version": "0.29.0-gfm.0.2",
   "description": "GitHub Flavored Markdown ¦ Native bindings for cmark-gfm, GitHub's fork of cmark, a CommonMark parsing and rendering library",
   "repository": "https://github.com/mvasilkov/node-cmark-gfm.git",
   "main": "index.js",
@@ -30,6 +30,6 @@
     "chai-html": "^1.3.0",
     "dedent": "^0.7.0",
     "mocha": "^7.0.0",
-    "node-gyp": "^6.0.1"
+    "node-gyp": "^6.1.0"
   }
 }
