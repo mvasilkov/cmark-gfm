@@ -74,6 +74,7 @@ int parse_options(Napi::Object options_obj) {
   result |= get_option(options_obj, "tablePreferStyleAttributes", CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES);
   result |= get_option(options_obj, "fullInfoString", CMARK_OPT_FULL_INFO_STRING);
   result |= get_option(options_obj, "unsafe", CMARK_OPT_UNSAFE);
+  result |= get_option(options_obj, "react", CMARK_OPT_REACT);
   return result;
 }
 

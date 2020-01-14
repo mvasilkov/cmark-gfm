@@ -752,6 +752,10 @@ char *cmark_render_latex_with_mem(cmark_node *root, int options, int width, cmar
  */
 #define CMARK_OPT_FULL_INFO_STRING (1 << 16)
 
+/** Produce React-compatible output (JSX).
+ */
+#define CMARK_OPT_REACT (1 << 20)
+
 /**
  * ## Version information
  */

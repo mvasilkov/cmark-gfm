@@ -99,7 +99,7 @@ describe('options', () => {
   })
 
   describe('githubPreLang', () => {
-    it('it adds a language class to the code tag by default', () => {
+    it('adds a language class to the code tag by default', () => {
       const markdown = dedent`
       \`\`\`javascript
       console.log('hi')
@@ -109,6 +109,21 @@ describe('options', () => {
       const html = `<pre><code class="language-javascript">console.log('hi')</code></pre>`
 
       const rendered = cmark.renderHtmlSync(markdown)
+      assert.htmlEqual(rendered, html)
+    })
+
+    it('adds a language className to the code tag by default (react)', () => {
+      const markdown = dedent`
+      \`\`\`javascript
+      console.log('hi')
+      \`\`\`
+      `
+
+      const html = `<pre><code className="language-javascript">console.log('hi')</code></pre>`
+
+      const rendered = cmark.renderHtmlSync(markdown, {
+        react: true
+      })
       assert.htmlEqual(rendered, html)
     })
 
@@ -174,6 +189,31 @@ describe('options', () => {
 
       const rendered = cmark.renderHtmlSync(markdown, {
         footnotes: true
+      })
+      assert.htmlEqual(rendered, html)
+    })
+
+    it('parses footnotes (react)', () => {
+      const markdown = dedent`
+      Here is some text[^1].
+
+      [^1]: And the note
+      `
+
+      const html = `
+      <p>Here is some text<sup className="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>.</p>
+      <section className="footnotes">
+        <ol>
+          <li id="fn1">
+            <p>And the note <a href="#fnref1" className="footnote-backref">↩</a></p>
+          </li>
+        </ol>
+      </section>
+      `
+
+      const rendered = cmark.renderHtmlSync(markdown, {
+        footnotes: true,
+        react: true
       })
       assert.htmlEqual(rendered, html)
     })
@@ -332,6 +372,26 @@ describe('options', () => {
       `
 
       const rendered = cmark.renderHtmlSync(markdown)
+      assert.htmlEqual(rendered, html)
+    })
+
+    it('is safe by default (react)', () => {
+      const markdown = dedent`
+      ![img](data:image/gif;base64,abccdefgh)
+
+      <div>hello!</div>
+
+      [link](javascript:alert('omg'))
+      `.trim()
+
+      const html = `
+      <p><img alt="img" src="data:image/gif;base64,abccdefgh"></p>
+      <p><a href="">link</a></p>
+      `
+
+      const rendered = cmark.renderHtmlSync(markdown, {
+        react: true
+      })
       assert.htmlEqual(rendered, html)
     })
 
