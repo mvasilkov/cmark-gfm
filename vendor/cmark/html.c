@@ -59,7 +59,7 @@ static void filter_html_block(cmark_html_renderer *renderer, uint8_t *data, size
     cmark_strbuf_put(html, data, (bufsize_t)len);
 }
 
-static bool S_put_footnote_backref(cmark_html_renderer *renderer, cmark_strbuf *html) {
+static bool S_put_footnote_backref(cmark_html_renderer *renderer, cmark_strbuf *html, int options) {
   if (renderer->written_footnote_ix >= renderer->footnote_ix)
     return false;
   renderer->written_footnote_ix = renderer->footnote_ix;
@@ -68,7 +68,9 @@ static bool S_put_footnote_backref(cmark_html_renderer *renderer, cmark_strbuf *
   char n[32];
   snprintf(n, sizeof(n), "%d", renderer->footnote_ix);
   cmark_strbuf_puts(html, n);
-  cmark_strbuf_puts(html, "\" class=\"footnote-backref\">↩</a>");
+  cmark_strbuf_puts(html, (options & CMARK_OPT_REACT) ?
+    "\" className=\"footnote-backref\">↩</a>" :
+    "\" class=\"footnote-backref\">↩</a>");
 
   return true;
 }
@@ -211,7 +213,9 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
       } else {
         cmark_strbuf_puts(html, "<pre");
         cmark_html_render_sourcepos(node, html, options);
-        cmark_strbuf_puts(html, "><code class=\"language-");
+        cmark_strbuf_puts(html, (options & CMARK_OPT_REACT) ?
+          "><code className=\"language-" :
+          "><code class=\"language-");
         escape_html(html, node->as.code.info.data, first_tag);
         if (first_tag < node->as.code.info.len && (options & CMARK_OPT_FULL_INFO_STRING)) {
           cmark_strbuf_puts(html, "\" data-meta=\"");
@@ -228,7 +232,8 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
   case CMARK_NODE_HTML_BLOCK:
     cmark_html_render_cr(html);
     if (!(options & CMARK_OPT_UNSAFE)) {
-      cmark_strbuf_puts(html, "<!-- raw HTML omitted -->");
+      if (!(options & CMARK_OPT_REACT))
+        cmark_strbuf_puts(html, "<!-- raw HTML omitted -->");
     } else if (renderer->filter_extensions) {
       filter_html_block(renderer, node->as.literal.data, node->as.literal.len);
     } else {
@@ -273,7 +278,7 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
       } else {
         if (parent->type == CMARK_NODE_FOOTNOTE_DEFINITION && node->next == NULL) {
           cmark_strbuf_putc(html, ' ');
-          S_put_footnote_backref(renderer, html);
+          S_put_footnote_backref(renderer, html, options);
         }
         cmark_strbuf_puts(html, "</p>\n");
       }
@@ -306,7 +311,8 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
 
   case CMARK_NODE_HTML_INLINE:
     if (!(options & CMARK_OPT_UNSAFE)) {
-      cmark_strbuf_puts(html, "<!-- raw HTML omitted -->");
+      if (!(options & CMARK_OPT_REACT))
+        cmark_strbuf_puts(html, "<!-- raw HTML omitted -->");
     } else {
       filtered = false;
       for (it = renderer->filter_extensions; it; it = it->next) {
@@ -392,7 +398,9 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
   case CMARK_NODE_FOOTNOTE_DEFINITION:
     if (entering) {
       if (renderer->footnote_ix == 0) {
-        cmark_strbuf_puts(html, "<section class=\"footnotes\">\n<ol>\n");
+        cmark_strbuf_puts(html, (options & CMARK_OPT_REACT) ?
+          "<section className=\"footnotes\">\n<ol>\n" :
+          "<section class=\"footnotes\">\n<ol>\n");
       }
       ++renderer->footnote_ix;
       cmark_strbuf_puts(html, "<li id=\"fn");
@@ -401,7 +409,7 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
       cmark_strbuf_puts(html, n);
       cmark_strbuf_puts(html, "\">\n");
     } else {
-      if (S_put_footnote_backref(renderer, html)) {
+      if (S_put_footnote_backref(renderer, html, options)) {
         cmark_strbuf_putc(html, '\n');
       }
       cmark_strbuf_puts(html, "</li>\n");
@@ -410,7 +418,9 @@ static int S_render_node(cmark_html_renderer *renderer, cmark_node *node,
 
   case CMARK_NODE_FOOTNOTE_REFERENCE:
     if (entering) {
-      cmark_strbuf_puts(html, "<sup class=\"footnote-ref\"><a href=\"#fn");
+      cmark_strbuf_puts(html, (options & CMARK_OPT_REACT) ?
+        "<sup className=\"footnote-ref\"><a href=\"#fn" :
+        "<sup class=\"footnote-ref\"><a href=\"#fn");
       cmark_strbuf_put(html, node->as.literal.data, node->as.literal.len);
       cmark_strbuf_puts(html, "\" id=\"fnref");
       cmark_strbuf_put(html, node->as.literal.data, node->as.literal.len);
