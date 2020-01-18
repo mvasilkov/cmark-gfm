@@ -1,3 +1,6 @@
+const { describe, it, xit } = require('smoltest/adapt/mocha')(module)
+require('./helper')
+
 const cmark = require('../')
 
 const assert = require('chai').assert
