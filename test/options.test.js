@@ -1,4 +1,4 @@
-const { describe, it, xit } = require('smoltest/adapt/mocha')(module)
+const { describe, it, xit } = require('smoltest')(exports)
 require('./helper')
 
 const cmark = require('../')
