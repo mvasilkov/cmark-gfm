@@ -25,10 +25,8 @@
     "node-addon-api": "*"
   },
   "devDependencies": {
-    "@alrra/travis-scripts": "^3.0.1",
-    "chai": "^4.2.0",
-    "chai-html": "^1.3.0",
-    "dedent": "^0.7.0",
+    "@mvasilkov/outdent": "^1.0.5",
+    "assert-equal-html": "^0.1.0",
     "node-gyp": "^6.1.0",
     "smoltest": "*"
   }

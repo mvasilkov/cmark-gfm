@@ -1,19 +1,20 @@
+'use strict'
+
+const assert = require('assert').strict
+const { assertEqual } = require('assert-equal-html')
 const { describe, it } = require('smoltest')(exports)
-require('./helper')
+const { outdent } = require('@mvasilkov/outdent')
 
-const cmark = require('../')
-
-const assert = require('chai').assert
-const dedent = require('dedent')
+const cmark = require('..')
 
 describe('extensions', () => {
   describe('table', () => {
     it('renders tables', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       |Header|
       |------|
       |Hello |
-      `.trim()
+      `)
 
       const html = `
       <table>
@@ -34,15 +35,15 @@ describe('extensions', () => {
           table: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('strikethrough', () => {
     it('enables strikethrough', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       It's all about ~CoffeeScript~ ES2016
-      `.trim()
+      `)
 
       const html = `
       <p>It's all about <del>CoffeeScript</del> ES2016</p>
@@ -52,15 +53,15 @@ describe('extensions', () => {
           strikethrough: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('tagfilter', () => {
     it('only allows certain HTML tags to be rendered as raw HTML', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       <div>What a weird <xmp> tag</div>
-      `.trim()
+      `)
 
       const html = `
       <div>What a weird &lt;xmp> tag</div>
@@ -72,15 +73,15 @@ describe('extensions', () => {
           tagfilter: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('autolink', () => {
     it('turns URLs into links', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       Visit us at https://github.com!
-      `.trim()
+      `)
 
       const html = `
       <p>Visit us at <a href="https://github.com">https://github.com</a>!</p>
@@ -91,16 +92,16 @@ describe('extensions', () => {
           autolink: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('tasklist', () => {
     it('renders GitHub-style task lists', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       - [ ] Task 1
       - [x] Task 2
-      `
+      `)
 
       const html = `
       <ul>
@@ -114,25 +115,25 @@ describe('extensions', () => {
           tasklist: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     // https://github.com/github/cmark-gfm/issues/168
     it('handles nested sublists correctly', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       - [x] foo
           - [ ] bar
           - [x] baz
       - [ ] bim
-      `
+      `)
 
       const html = `
       <ul>
         <li><input type="checkbox" checked="" disabled="" /> foo
-<ul>
-  <li><input type="checkbox" disabled="" /> bar</li>
-  <li><input type="checkbox" checked="" disabled="" /> baz</li>
-</ul>
+          <ul>
+            <li><input type="checkbox" disabled="" /> bar</li>
+            <li><input type="checkbox" checked="" disabled="" /> baz</li>
+          </ul>
         </li>
         <li><input type="checkbox" disabled="" /> bim</li>
       </ul>
@@ -143,30 +144,30 @@ describe('extensions', () => {
           tasklist: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   it("doesn't crash for bad extensions", () => {
-    assert.throws(function() {
-      cmark.renderHtml('# Hi', {extensions: ['fake']})
+    assert.throws(function () {
+      cmark.renderHtml('# Hi', { extensions: ['fake'] })
     })
-    assert.throws(function() {
-      cmark.renderHtml('# Hi', {extensions: 'notanarray'})
+    assert.throws(function () {
+      cmark.renderHtml('# Hi', { extensions: 'notanarray' })
     })
-    assert.throws(function() {
-      cmark.renderHtml('# Hi', {extensions: [{}]})
+    assert.throws(function () {
+      cmark.renderHtml('# Hi', { extensions: [{}] })
     })
   })
 
   it('only enables an extension with a truthy value', () => {
-    const rendered = cmark.renderHtmlSync('- [ ] https://google,com', {
+    const rendered = cmark.renderHtmlSync('- [ ] https://github.com', {
       extensions: {
         tasklist: false,
         autolink: true
       }
     })
-    assert.notInclude(rendered, 'checkbox')
-    assert.include(rendered, 'href')
+    assert(!rendered.includes('checkbox'))
+    assert(rendered.includes('href'))
   })
 })

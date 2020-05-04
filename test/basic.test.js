@@ -1,13 +1,14 @@
+'use strict'
+
+const assert = require('assert').strict
+const { assertEqual } = require('assert-equal-html')
 const { describe, it } = require('smoltest')(exports)
-require('./helper')
 
-const cmark = require('../')
-
-const assert = require('chai').assert
+const cmark = require('..')
 
 describe('#renderHtmlSync', () => {
   it('renders HTML synchronously', () => {
-    assert.htmlEqual(cmark.renderHtmlSync('# Hi'), '<h1>Hi</h1>')
+    assertEqual(cmark.renderHtmlSync('# Hi'), '<h1>Hi</h1>')
   })
 
   it('handles odd values', () => {
@@ -21,9 +22,9 @@ describe('#renderHtml', () => {
   it('renders HTML asynchronously with a callback', (done) => {
     let ticked = false
     cmark.renderHtml('# Hi', (err, html) => {
-      assert.notOk(err)
-      assert.htmlEqual(html, '<h1>Hi</h1>')
-      assert.ok(ticked)
+      assert.ifError(err)
+      assertEqual(html, '<h1>Hi</h1>')
+      assert(ticked)
       done()
     })
     ticked = true
@@ -33,8 +34,8 @@ describe('#renderHtml', () => {
     let ticked = false
     const promise = cmark.renderHtml('# Hi')
     promise.then(html => {
-      assert.htmlEqual(html, '<h1>Hi</h1>')
-      assert.ok(ticked)
+      assertEqual(html, '<h1>Hi</h1>')
+      assert(ticked)
       done()
     })
     ticked = true

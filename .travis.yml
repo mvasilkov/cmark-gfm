@@ -1,14 +1,16 @@
 os:
   - linux
   - osx
-dist: trusty
+
+dist: xenial
+
 sudo: false
 
 language: node_js
 
 node_js:
-  - node
-  - 8
+  - 14
+  - 12
   - 10
 
 install:

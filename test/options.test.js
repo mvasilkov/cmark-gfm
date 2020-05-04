@@ -1,15 +1,16 @@
+'use strict'
+
+const assert = require('assert').strict
+const { assertEqual } = require('assert-equal-html')
 const { describe, it, xit } = require('smoltest')(exports)
-require('./helper')
+const { outdent } = require('@mvasilkov/outdent')
 
-const cmark = require('../')
-
-const assert = require('chai').assert
-const dedent = require('dedent')
+const cmark = require('..')
 
 describe('options', () => {
   describe('sourcepos', () => {
     it('adds data-sourcepos attributes to block-level elements', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       # Hello
 
       This is a test.
@@ -17,7 +18,7 @@ describe('options', () => {
       \`\`\`javascript
       whee
       \`\`\`
-      `.trim()
+      `)
 
       const html = `
       <h1 data-sourcepos="1:1-1:7">Hello</h1>
@@ -29,16 +30,16 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         sourcepos: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('nobreaks', () => {
     it('renders softbreak elements as spaces', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       abc
       def
-      `.trim()
+      `)
 
       const html = `
       <p>abc def</p>
@@ -47,25 +48,25 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         nobreaks: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('hardbreaks', () => {
     it('renders softbreak elements as hard line breaks', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       abc
       def
-      `.trim()
+      `)
 
-      const html = dedent`
+      const html = outdent(`
       <p>abc<br>\ndef</p>
-      `.trim()
+      `)
 
       const rendered = cmark.renderHtmlSync(markdown, {
         hardbreaks: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
@@ -80,69 +81,69 @@ describe('options', () => {
         validateUtf8: false
       })
       console.log(rendered)
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('smart', () => {
     it('makes punctuation fancy', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       "Good morning," said the man. "Wait -- maybe it's 'afternoon'." --- Someone Famous
-      `.trim()
+      `)
 
       const html = `
       <p>“Good morning,” said the man. “Wait – maybe it’s ‘afternoon’.” — Someone Famous</p>
-      `.trim()
+      `
 
       const rendered = cmark.renderHtmlSync(markdown, {
         smart: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('githubPreLang', () => {
     it('adds a language class to the code tag by default', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       \`\`\`javascript
       console.log('hi')
       \`\`\`
-      `
+      `)
 
       const html = `<pre><code class="language-javascript">console.log('hi')</code></pre>`
 
       const rendered = cmark.renderHtmlSync(markdown)
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('adds a language className to the code tag by default (react)', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       \`\`\`javascript
       console.log('hi')
       \`\`\`
-      `
+      `)
 
       const html = `<pre><code className="language-javascript">console.log('hi')</code></pre>`
 
       const rendered = cmark.renderHtmlSync(markdown, {
         react: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('uses GitHub-style pre tags with lang attributes', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       \`\`\`javascript
       console.log('hi')
       \`\`\`
-      `
+      `)
 
       const html = `<pre lang="javascript"><code>console.log('hi')</code></pre>`
 
       const rendered = cmark.renderHtmlSync(markdown, {
         githubPreLang: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
@@ -173,11 +174,11 @@ describe('options', () => {
 
   describe('footnotes', () => {
     it('parses footnotes', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       Here is some text[^1].
 
       [^1]: And the note
-      `
+      `)
 
       const html = `
       <p>Here is some text<sup class="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>.</p>
@@ -193,15 +194,15 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         footnotes: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('parses footnotes (react)', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       Here is some text[^1].
 
       [^1]: And the note
-      `
+      `)
 
       const html = `
       <p>Here is some text<sup className="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>.</p>
@@ -218,7 +219,7 @@ describe('options', () => {
         footnotes: true,
         react: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
@@ -230,8 +231,8 @@ describe('options', () => {
       const rendered1 = cmark.renderHtmlSync(markdown1, { extensions: { strikethrough: true } })
       const rendered2 = cmark.renderHtmlSync(markdown2, { extensions: { strikethrough: true } })
 
-      assert.htmlEqual(rendered1, '<p>This is some <del>text</del>!</p>')
-      assert.htmlEqual(rendered2, '<p>This is some <del>text</del>!</p>')
+      assertEqual(rendered1, '<p>This is some <del>text</del>!</p>')
+      assertEqual(rendered2, '<p>This is some <del>text</del>!</p>')
     })
 
     it('only parses strikethroughs if surrounded by exactly two tildes', () => {
@@ -251,18 +252,18 @@ describe('options', () => {
         }
       })
 
-      assert.htmlEqual(rendered1, '<p>This is some ~text~!</p>')
-      assert.htmlEqual(rendered2, '<p>This is some <del>text</del>!</p>')
+      assertEqual(rendered1, '<p>This is some ~text~!</p>')
+      assertEqual(rendered2, '<p>This is some <del>text</del>!</p>')
     })
   })
 
   describe('tablePreferStyleAttributes', () => {
     it('uses align attributes to align table cells by default', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       | abc | defghi |
       :-: | -----------:
       bar | baz
-      `
+      `)
 
       const html = `
       <table>
@@ -286,15 +287,15 @@ describe('options', () => {
           table: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('uses style attributes to align table cells', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       | abc | defghi |
       :-: | -----------:
       bar | baz
-      `
+      `)
 
       const html = `
       <table>
@@ -319,30 +320,30 @@ describe('options', () => {
           table: true
         }
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('fullInfoString', () => {
     it('drops the remainder of code block info strings by default', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       \`\`\`javascript here is more data
       console.log('hi')
       \`\`\`
-      `
+      `)
 
       const html = `<pre><code class="language-javascript">console.log('hi')</code></pre>`
 
       const rendered = cmark.renderHtmlSync(markdown)
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('includes the remainder of code block info strings in an attribute', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       \`\`\`javascript here is more data
       console.log('hi')
       \`\`\`
-      `
+      `)
 
       const html = `
       <pre>
@@ -354,19 +355,19 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         fullInfoString: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 
   describe('unsafe', () => {
     it('is safe by default', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       ![img](data:image/gif;base64,abccdefgh)
 
       <div>hello!</div>
 
       [link](javascript:alert('omg'))
-      `.trim()
+      `)
 
       const html = `
       <p><img alt="img" src="data:image/gif;base64,abccdefgh"></p>
@@ -375,17 +376,17 @@ describe('options', () => {
       `
 
       const rendered = cmark.renderHtmlSync(markdown)
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('is safe by default (react)', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       ![img](data:image/gif;base64,abccdefgh)
 
       <div>hello!</div>
 
       [link](javascript:alert('omg'))
-      `.trim()
+      `)
 
       const html = `
       <p><img alt="img" src="data:image/gif;base64,abccdefgh"></p>
@@ -395,17 +396,17 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         react: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
 
     it('allows HTML and unsafe links', () => {
-      const markdown = dedent`
+      const markdown = outdent(`
       ![img](data:image/gif;base64,abccdefgh)
 
       <div>hello!</div>
 
       [link](javascript:alert('omg'))
-      `.trim()
+      `)
 
       const html = `
       <p><img alt="img" src="data:image/gif;base64,abccdefgh"></p>
@@ -416,7 +417,7 @@ describe('options', () => {
       const rendered = cmark.renderHtmlSync(markdown, {
         unsafe: true
       })
-      assert.htmlEqual(rendered, html)
+      assertEqual(rendered, html)
     })
   })
 })
