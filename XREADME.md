@@ -10,6 +10,20 @@ GitHub Flavored Markdown ¦ Native bindings for cmark-gfm, GitHub's fork of cmar
 
 ---
 
+This is a fork of [Michelle Tilley][BinaryMuse]'s repo. It's entirely compatible with the upstream, and brings the following improvements:
+
+* Update the underlying C library to the latest master
+* Ensure that it builds for the last few major versions of Node.js
+* Reduce dev dependencies' footprint
+* Optional React (JSX) support
+
+Installation
+---
+
+```sh
+npm add @mvasilkov/cmark-gfm
+```
+
 License
 ---
 
@@ -23,3 +37,5 @@ MIT
 [travis-url]: https://travis-ci.org/github/mvasilkov/cmark-gfm
 [appveyor-badge]: https://ci.appveyor.com/api/projects/status/2w02o0n3vpid13ho/branch/@mvasilkov/cmark-gfm?svg=true
 [appveyor-url]: https://ci.appveyor.com/project/mvasilkov/cmark-gfm
+
+[BinaryMuse]: https://github.com/BinaryMuse
