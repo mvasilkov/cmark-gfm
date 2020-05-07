@@ -14,6 +14,7 @@ This is a fork of [Michelle Tilley][BinaryMuse]'s repo. It's entirely compatible
 
 * Update the underlying C library to the latest master
 * Ensure that it builds for the last few major versions of Node.js
+* Exclude dead code from compilation
 * Reduce dev dependencies' footprint
 * Optional React (JSX) support
 

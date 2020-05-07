@@ -16,6 +16,12 @@ skip_files = frozenset((
     'harness.c',
     'harness.h',
     'main.c',
+    # Rendering
+    'commonmark.c',
+    'latex.c',
+    'man.c',
+    'plaintext.c',
+    'xml.c',
 ))
 
 
@@ -61,6 +67,8 @@ def run():
     patch()
     print('Patch (React)')
     git_patch('react')
+    print('Patch (Rendering)')
+    git_patch('rendering')
     print('Done')
 
 

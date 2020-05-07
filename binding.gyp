@@ -19,7 +19,6 @@
         'vendor/cmark/buffer.c',
         'vendor/cmark/cmark.c',
         'vendor/cmark/cmark_ctype.c',
-        'vendor/cmark/commonmark.c',
         'vendor/cmark/footnotes.c',
         'vendor/cmark/houdini_href_e.c',
         'vendor/cmark/houdini_html_e.c',
@@ -27,12 +26,9 @@
         'vendor/cmark/html.c',
         'vendor/cmark/inlines.c',
         'vendor/cmark/iterator.c',
-        'vendor/cmark/latex.c',
         'vendor/cmark/linked_list.c',
-        'vendor/cmark/man.c',
         'vendor/cmark/map.c',
         'vendor/cmark/node.c',
-        'vendor/cmark/plaintext.c',
         'vendor/cmark/plugin.c',
         'vendor/cmark/references.c',
         'vendor/cmark/registry.c',
@@ -40,7 +36,6 @@
         'vendor/cmark/scanners.c',
         'vendor/cmark/syntax_extension.c',
         'vendor/cmark/utf8.c',
-        'vendor/cmark/xml.c',
         'vendor/cmark/autolink.c',
         'vendor/cmark/core-extensions.c',
         'vendor/cmark/ext_scanners.c',
@@ -59,13 +54,13 @@
       ],
       'dependencies': [
         'libcmark-gfm',
-        "<!(node -p \"require('node-addon-api').gyp\")"
+        '''<!(node -p "require('node-addon-api').gyp")'''
       ],
       'cflags': [
         '-std=c++11'
       ],
       'include_dirs': [
-        "<!@(node -p \"require('node-addon-api').include\")",
+        '''<!@(node -p "require('node-addon-api').include")''',
         'src',
         'vendor/cmark'
       ],
