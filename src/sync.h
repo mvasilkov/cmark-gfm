@@ -3,6 +3,6 @@
 
 #include "napi.h"
 
-Napi::Value render_html_sync(const Napi::CallbackInfo& info);
+Napi::Value render_html_sync(const Napi::CallbackInfo &info);
 
 #endif
