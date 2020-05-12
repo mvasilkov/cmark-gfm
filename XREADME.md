@@ -42,8 +42,53 @@ renderHtml('# hello, world').then(html => {})
 renderHtml('# hello, world', (err, html) => {})
 ```
 
+### Passing options
+
+```javascript
+renderHtmlSync('# hello, world', { sourcepos: true })
+// returns <h1 data-sourcepos="1:1-1:14">hello, world</h1>
+
+await renderHtml('# hello, world', { sourcepos: true })
+// equivalent to the above
+```
+
+### Using extensions
+
 Options
 ---
+
+### Options affecting rendering
+
+| Option | Što
+| --- | ---
+| sourcepos | Include a `data-sourcepos` attribute on all block elements.
+| hardbreaks | Render `softbreak` elements as hard line breaks.
+| unsafe | Render raw HTML and unsafe links.
+| nobreaks | Render `softbreak` elements as spaces.
+| react | Produce React-compatible output (JSX).
+
+### Options affecting parsing
+
+| Option | Što
+| --- | ---
+| validateUtf8 | Validate UTF-8 in the input before parsing, replacing illegal sequences with the replacement character U+FFFD.
+| smart | Convert straight quotes to curly, `---` to em dashes, `--` to en dashes.
+| githubPreLang | Use GitHub-style `<pre lang="x">` tags for code blocks instead of `<pre><code class="language-x">`.
+| liberalHtmlTag | Be liberal in interpreting inline HTML tags.
+| footnotes | Parse footnotes.
+| strikethroughDoubleTilde | Only parse strikethroughs if surrounded by exactly 2 tildes. Gives some compatibility with redcarpet.
+| tablePreferStyleAttributes | Use `style` attributes to align table cells instead of `align` attributes.
+| fullInfoString | Include the remainder of the info string in code blocks in a separate attribute.
+
+### Extensions
+
+| Extension | Što
+| --- | ---
+| autolink |
+| strikethrough |
+| table |
+| tagfilter |
+| tasklist |
 
 Authors
 ---

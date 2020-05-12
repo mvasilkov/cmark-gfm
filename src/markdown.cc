@@ -60,12 +60,13 @@ int get_option(Napi::Object options_obj, const char *option_name, int option_mas
 
 int parse_options(Napi::Object options_obj) {
   int result = CMARK_OPT_DEFAULT;
-  // rendering options
+  // Options affecting rendering
   result |= get_option(options_obj, "sourcepos", CMARK_OPT_SOURCEPOS);
   result |= get_option(options_obj, "hardbreaks", CMARK_OPT_HARDBREAKS);
+  result |= get_option(options_obj, "unsafe", CMARK_OPT_UNSAFE);
   result |= get_option(options_obj, "nobreaks", CMARK_OPT_NOBREAKS);
   result |= get_option(options_obj, "react", CMARK_OPT_REACT);
-  // parsing options
+  // Options affecting parsing
   result |= get_option(options_obj, "validateUtf8", CMARK_OPT_VALIDATE_UTF8);
   result |= get_option(options_obj, "smart", CMARK_OPT_SMART);
   result |= get_option(options_obj, "githubPreLang", CMARK_OPT_GITHUB_PRE_LANG);
@@ -74,7 +75,6 @@ int parse_options(Napi::Object options_obj) {
   result |= get_option(options_obj, "strikethroughDoubleTilde", CMARK_OPT_STRIKETHROUGH_DOUBLE_TILDE);
   result |= get_option(options_obj, "tablePreferStyleAttributes", CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES);
   result |= get_option(options_obj, "fullInfoString", CMARK_OPT_FULL_INFO_STRING);
-  result |= get_option(options_obj, "unsafe", CMARK_OPT_UNSAFE);
   return result;
 }
 
