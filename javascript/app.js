@@ -74,7 +74,7 @@ module.exports = {
   },
 
   version: function () {
-    return bindings.cmark_version
+    return bindings.version
   },
 
   createStreamingParser: function(options) {

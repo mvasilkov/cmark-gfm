@@ -54,8 +54,22 @@ await renderHtml('# hello, world', { sourcepos: true })
 
 ### Using extensions
 
+```javascript
+renderHtmlSync('# hello, https://sr.ht/', {
+  extensions: { autolink: true }
+})
+// returns <h1>hello, <a href="https://sr.ht/">https://sr.ht/</a></h1>
+
+await renderHtml('# hello, https://sr.ht/', {
+  extensions: { autolink: true }
+})
+// equivalent to the above
+```
+
 Options
 ---
+
+All of the following options are boolean, and off by default.
 
 ### Options affecting rendering
 
@@ -84,11 +98,11 @@ Options
 
 | Extension | Što
 | --- | ---
-| autolink |
-| strikethrough |
-| table |
-| tagfilter |
-| tasklist |
+| autolink | Output web addresses and emails as hyperlinks.
+| strikethrough | Enable the `~~strikethrough~~` syntax.
+| table | Enable [tables][tables].
+| tagfilter | Escape the following HTML tags: `title`, `textarea`, `style`, `xmp`, `iframe`, `noembed`, `noframes`, `script`, and `plaintext`.
+| tasklist | Enable [task lists][task-lists].
 
 Authors
 ---
@@ -115,6 +129,9 @@ MIT
 [travis-url]: https://travis-ci.org/github/mvasilkov/cmark-gfm
 [appveyor-badge]: https://ci.appveyor.com/api/projects/status/2w02o0n3vpid13ho/branch/@mvasilkov/cmark-gfm?svg=true
 [appveyor-url]: https://ci.appveyor.com/project/mvasilkov/cmark-gfm
+
+[tables]: https://help.github.com/en/github/writing-on-github/organizing-information-with-tables
+[task-lists]: https://github.blog/2014-04-28-task-lists-in-all-markdown-documents/
 
 [BinaryMuse]: https://github.com/BinaryMuse
 [mvasilkov]: https://github.com/mvasilkov
