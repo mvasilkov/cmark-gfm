@@ -52,6 +52,8 @@ await renderHtml('# hello, world', { sourcepos: true })
 // equivalent to the above
 ```
 
+All available options are listed below.
+
 ### Using extensions
 
 ```javascript
@@ -64,6 +66,19 @@ await renderHtml('# hello, https://sr.ht/', {
   extensions: { autolink: true }
 })
 // equivalent to the above
+```
+
+Supported extensions are listed below.
+
+### Usage with streams
+
+```javascript
+const fs = require('fs')
+const { StreamingParser } = require('@mvasilkov/cmark-gfm')
+
+fs.createReadStream('README.md')
+  .pipe(new StreamingParser({ extensions: { table: true } }))
+  .pipe(fs.createWriteStream('README.html'))
 ```
 
 Options
@@ -109,6 +124,7 @@ Authors
 
 This is a fork of [Michelle Tilley][BinaryMuse]'s repo. It's entirely compatible with the upstream, and brings the following improvements:
 
+* Convert to TypeScript
 * Update the underlying C library to the latest master
 * Exclude dead code from compilation
 * Reduce dev dependencies' footprint
