@@ -5,30 +5,93 @@ import { StringDecoder } from 'string_decoder'
 import { Transform } from 'stream'
 
 interface IExtensions {
+    /** Output web addresses and emails as hyperlinks.
+     */
     autolink?: boolean
+
+    /** Enable the `~~strikethrough~~` syntax.
+     */
     strikethrough?: boolean
+
+    /** Enable tables.
+     */
     table?: boolean
+
+    /** Escape the following HTML tags: `title`, `textarea`, `style`, `xmp`,
+     * `iframe`, `noembed`, `noframes`, `script`, and `plaintext`.
+     */
     tagfilter?: boolean
+
+    /** Enable task lists.
+     */
     tasklist?: boolean
 }
 
 interface IOptions {
     // Options affecting rendering
+
+    /** Include a `data-sourcepos` attribute on all block elements.
+     */
     sourcepos?: boolean
+
+    /** Render `softbreak` elements as hard line breaks.
+     */
     hardbreaks?: boolean
+
+    /** Render raw HTML and unsafe links.
+     */
     unsafe?: boolean
+
+    /** Render `softbreak` elements as spaces.
+     */
     nobreaks?: boolean
+
+    /** Produce React-compatible output (JSX).
+     */
     react?: boolean
+
     // Options affecting parsing
+
+    /** Validate UTF-8 in the input before parsing, replacing illegal
+     * sequences with the replacement character U+FFFD.
+     */
     validateUtf8?: boolean
+
+    /** Convert straight quotes to curly, `---` to em dashes, `--` to en dashes.
+     */
     smart?: boolean
+
+    /** Use GitHub-style `<pre lang="x">` tags for code blocks instead of
+     * `<pre><code class="language-x">`.
+     */
     githubPreLang?: boolean
+
+    /** Be liberal in interpreting inline HTML tags.
+     */
     liberalHtmlTag?: boolean
+
+    /** Parse footnotes.
+     */
     footnotes?: boolean
+
+    /** Only parse strikethroughs if surrounded by exactly 2 tildes.
+     * Gives some compatibility with redcarpet.
+     */
     strikethroughDoubleTilde?: boolean
+
+    /** Use `style` attributes to align table cells instead of `align` attributes.
+     */
     tablePreferStyleAttributes?: boolean
+
+    /** Include the remainder of the info string in code blocks in
+     * a separate attribute.
+     */
     fullInfoString?: boolean
+
     // Extensions
+
+    /** Enable extensions.
+     */
     extensions?: IExtensions
 }
 
@@ -48,6 +111,8 @@ type Bindings = {
 
 const bindings = load('binding.node') as Bindings
 
+/** Transform stream which converts Markdown to HTML.
+ */
 export class StreamingParser extends Transform {
     private readonly _parser: Parser
     private readonly _decoder: StringDecoder
@@ -85,12 +150,21 @@ export class StreamingParser extends Transform {
     }
 }
 
+/** Convert Markdown to HTML synchronously.
+ * @param input Markdown
+ * @param options Options
+ */
 export function renderHtmlSync(input: string, options: IOptions = {}): string {
     return bindings.renderHtmlSync(input, options)
 }
 
 type RenderCallback = (err: Error | null, result?: string) => void
 
+/** Convert Markdown to HTML asynchronously.
+ * @param input Markdown
+ * @param options Options
+ * @param callback Callback function
+ */
 export function renderHtml(input: string, options?: IOptions): Promise<string>
 export function renderHtml(input: string, callback?: RenderCallback): Promise<string>
 export function renderHtml(input: string, options?: IOptions, callback?: RenderCallback): Promise<string>
