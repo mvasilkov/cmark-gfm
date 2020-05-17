@@ -8,6 +8,8 @@ const bindings_1 = __importDefault(require("bindings"));
 const string_decoder_1 = require("string_decoder");
 const stream_1 = require("stream");
 const bindings = bindings_1.default('binding.node');
+/** Transform stream which converts Markdown to HTML.
+ */
 class StreamingParser extends stream_1.Transform {
     constructor(options = {}) {
         super({ decodeStrings: false });
@@ -36,6 +38,10 @@ class StreamingParser extends stream_1.Transform {
     }
 }
 exports.StreamingParser = StreamingParser;
+/** Convert Markdown to HTML synchronously.
+ * @param input Markdown
+ * @param options Options
+ */
 function renderHtmlSync(input, options = {}) {
     return bindings.renderHtmlSync(input, options);
 }

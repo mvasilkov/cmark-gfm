@@ -1,6 +1,6 @@
 {
   "name": "@mvasilkov/cmark-gfm",
-  "version": "0.9.0",
+  "version": "0.29.0",
   "description": "GitHub Flavored Markdown ¦ Native bindings for cmark-gfm, GitHub's fork of cmark, a CommonMark parsing and rendering library",
   "repository": "https://github.com/mvasilkov/node-cmark-gfm.git",
   "main": "javascript/app.js",
