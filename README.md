@@ -139,7 +139,7 @@ MIT
 
 [npm-badge]: https://img.shields.io/npm/v/@mvasilkov/cmark-gfm.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/@mvasilkov/cmark-gfm
-[dependencies-badge]: https://img.shields.io/david/mvasilkov/cmark-gfm?style=flat
+[dependencies-badge]: https://img.shields.io/librariesio/release/npm/@mvasilkov/cmark-gfm?style=flat
 [dependencies-url]: https://www.npmjs.com/package/@mvasilkov/cmark-gfm?activeTab=dependencies
 [travis-badge]: https://img.shields.io/travis/mvasilkov/cmark-gfm/@mvasilkov/cmark-gfm?style=flat
 [travis-url]: https://travis-ci.org/github/mvasilkov/cmark-gfm
